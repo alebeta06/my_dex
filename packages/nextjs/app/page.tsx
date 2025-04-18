@@ -2,12 +2,29 @@
 
 import Link from "next/link";
 import type { NextPage } from "next";
-import { useAccount } from "wagmi";
+import { parseEther } from "viem";
+import { useAccount, useSendTransaction } from "wagmi";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
+  const { sendTransaction } = useSendTransaction();
+
+  const handleTransfer = async () => {
+    if (!connectedAddress) return;
+
+    try {
+      await sendTransaction({
+        to: connectedAddress, // Para testear, te envías a ti mismo
+        value: parseEther("0.001"), // 0.001 ETH
+      });
+      alert("Transferencia enviada exitosamente!");
+    } catch (error) {
+      console.error(error);
+      alert("Hubo un error al enviar la transferencia.");
+    }
+  };
 
   return (
     <>
@@ -20,6 +37,11 @@ const Home: NextPage = () => {
           <div className="flex justify-center items-center space-x-2 flex-col">
             <p className="my-2 font-medium">Connected Address:</p>
             <Address address={connectedAddress} />
+
+            {/* Botón para hacer transferencia */}
+            <button className="btn btn-primary mt-4" onClick={handleTransfer}>
+              Enviar 0.001 ETH
+            </button>
           </div>
 
           <p className="text-center text-lg">

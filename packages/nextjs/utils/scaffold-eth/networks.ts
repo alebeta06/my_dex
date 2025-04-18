@@ -1,3 +1,4 @@
+import { blockdagTestnet } from "./blockdagTestnet";
 import * as chains from "viem/chains";
 import scaffoldConfig from "~~/scaffold.config";
 
@@ -45,6 +46,10 @@ export const getAlchemyHttpUrl = (chainId: number) => {
 export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
   [chains.hardhat.id]: {
     color: "#b8af0c",
+  },
+  [blockdagTestnet.id]: {
+    color: "#ff9900", // elige un color distintivo para BDAG
+    // nativeCurrencyTokenAddress: "0x...", si necesitas mostrar un token ERC20 que represente BDAG
   },
   [chains.mainnet.id]: {
     color: "#ff8b9e",
