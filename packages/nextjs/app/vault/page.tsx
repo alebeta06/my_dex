@@ -9,137 +9,114 @@ import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaf
 
 const VaultPage: NextPage = () => {
   const { address } = useAccount();
+  const [depositAmt, setDepositAmt] = useState<string>("");
+  const [withdrawShares, setWithdrawShares] = useState<string>("");
 
-  const [depositAmount, setDepositAmount] = useState<string>("");
-  const [withdrawAmount, setWithdrawAmount] = useState<string>("");
-
-  // Lecturas del contrato Vault
+  // Lecturas
   const { data: vaultBalance } = useScaffoldReadContract({
     contractName: "Vault",
     functionName: "balanceOf",
-    args: [address ?? "0x0000000000000000000000000000000000000000"],
+    args: [address || ""],
   });
 
-  const { data: totalAssets } = useScaffoldReadContract({
+  const { data: vaultAssets } = useScaffoldReadContract({
     contractName: "Vault",
     functionName: "totalAssets",
   });
 
-  const { data: totalSupply } = useScaffoldReadContract({
+  const { data: vaultSupply } = useScaffoldReadContract({
     contractName: "Vault",
     functionName: "totalSupply",
   });
 
-  // Escribir en Vault y Controller
-  const { writeContractAsync: writeVaultAsync, isPending: isVaultPending } = useScaffoldWriteContract({
-    contractName: "Vault",
-  });
-
-  const { writeContractAsync: writeControllerAsync, isPending: isControllerPending } = useScaffoldWriteContract({
-    contractName: "Controller",
-  });
+  // Escrituras
+  const vaultWrite = useScaffoldWriteContract("Vault");
+  const controllerWrite = useScaffoldWriteContract("Controller");
 
   return (
     <div className="flex flex-col items-center p-8">
       <h1 className="text-3xl font-bold mb-6">Vault Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 w-full max-w-4xl">
-        <div className="card p-4 bg-base-200 shadow-md">
-          <h2 className="font-semibold text-lg">Tu Balance</h2>
+      {/* Estadísticas */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="card p-4">
+          <h2 className="font-semibold">Tu Balance</h2>
           <p>{vaultBalance ? formatEther(vaultBalance) : "0"} shares</p>
         </div>
-        <div className="card p-4 bg-base-200 shadow-md">
-          <h2 className="font-semibold text-lg">Activos Totales</h2>
-          <p>{totalAssets ? formatEther(totalAssets) : "0"} tokens</p>
+        <div className="card p-4">
+          <h2 className="font-semibold">Activos Totales</h2>
+          <p>{vaultAssets ? formatEther(vaultAssets) : "0"} tokens</p>
         </div>
-        <div className="card p-4 bg-base-200 shadow-md">
-          <h2 className="font-semibold text-lg">Supply Total</h2>
-          <p>{totalSupply ? formatEther(totalSupply) : "0"} shares</p>
+        <div className="card p-4">
+          <h2 className="font-semibold">Supply de Shares</h2>
+          <p>{vaultSupply ? formatEther(vaultSupply) : "0"} shares</p>
         </div>
       </div>
 
       {/* Depositar */}
-      <section className="mb-10 w-full max-w-md">
+      <section className="mb-8 w-full max-w-md">
         <h2 className="text-xl font-bold mb-2">Depositar</h2>
-        <InputBase value={depositAmount} onChange={setDepositAmount} placeholder="Cantidad a depositar" />
+        <InputBase placeholder="Cantidad en ETH" value={depositAmt} onChange={setDepositAmt} />
         <button
-          className="btn btn-primary mt-2 w-full"
-          disabled={!depositAmount || isVaultPending}
+          className="btn btn-primary mt-2"
+          disabled={!depositAmt || vaultWrite.isPending}
           onClick={async () => {
             try {
-              await writeVaultAsync({
+              await vaultWrite.writeContractAsync({
                 functionName: "deposit",
-                args: [parseEther(depositAmount)],
+                args: [parseEther(depositAmt)],
               });
-              setDepositAmount("");
+              setDepositAmt("");
             } catch (err) {
-              console.error("Error al depositar:", err);
+              console.error(err);
             }
           }}
         >
-          {isVaultPending ? "Procesando..." : "Depositar"}
+          {vaultWrite.isPending ? <span className="loading loading-spinner loading-sm"></span> : "Depositar"}
         </button>
       </section>
 
       {/* Retirar */}
-      <section className="mb-10 w-full max-w-md">
+      <section className="mb-8 w-full max-w-md">
         <h2 className="text-xl font-bold mb-2">Retirar</h2>
-        <InputBase value={withdrawAmount} onChange={setWithdrawAmount} placeholder="Cantidad de shares" />
+        <InputBase placeholder="Cantidad de shares" value={withdrawShares} onChange={setWithdrawShares} />
         <button
-          className="btn btn-secondary mt-2 w-full"
-          disabled={!withdrawAmount || isVaultPending}
+          className="btn btn-secondary mt-2"
+          disabled={!withdrawShares || vaultWrite.isPending}
           onClick={async () => {
             try {
-              await writeVaultAsync({
+              await vaultWrite.writeContractAsync({
                 functionName: "withdraw",
-                args: [parseEther(withdrawAmount)],
+                args: [parseEther(withdrawShares)],
               });
-              setWithdrawAmount("");
+              setWithdrawShares("");
             } catch (err) {
-              console.error("Error al retirar:", err);
+              console.error(err);
             }
           }}
         >
-          {isVaultPending ? "Procesando..." : "Retirar"}
+          {vaultWrite.isPending ? <span className="loading loading-spinner loading-sm"></span> : "Retirar"}
         </button>
       </section>
 
-      {/* Acciones del Owner */}
-      <section className="flex gap-4 flex-wrap">
+      {/* Funciones del Owner */}
+      <div className="flex gap-4">
         <button
           className="btn btn-accent"
-          disabled={isVaultPending}
-          onClick={async () => {
-            try {
-              await writeVaultAsync({
-                functionName: "harvest",
-                args: [],
-              });
-            } catch (err) {
-              console.error("Error al hacer harvest:", err);
-            }
-          }}
+          disabled={vaultWrite.isPending}
+          onClick={() => vaultWrite.writeContractAsync({ functionName: "harvest", args: [] })}
         >
-          {isVaultPending ? "Harvesting..." : "Harvest"}
+          {vaultWrite.isPending ? <span className="loading loading-spinner loading-sm"></span> : "Harvest"}
         </button>
 
         <button
           className="btn btn-accent"
-          disabled={isControllerPending}
-          onClick={async () => {
-            try {
-              await writeControllerAsync({
-                functionName: "rebalance",
-                args: [],
-              });
-            } catch (err) {
-              console.error("Error al hacer rebalance:", err);
-            }
-          }}
+          disabled={controllerWrite.isPending}
+          onClick={() => controllerWrite.writeContractAsync({ functionName: "rebalance", args: [] })}
         >
-          {isControllerPending ? "Rebalancing..." : "Rebalance"}
+          {controllerWrite.isPending ? <span className="loading loading-spinner loading-sm"></span> : "Rebalance"}
         </button>
-      </section>
+      </div>
     </div>
   );
 };
