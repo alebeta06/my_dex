@@ -4,7 +4,6 @@ import Link from "next/link";
 import { NextPage } from "next";
 import { parseEther } from "viem";
 import { useAccount, useSendTransaction } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
 
 const Home: NextPage = () => {
