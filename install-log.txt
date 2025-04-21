@@ -1,0 +1,26 @@
+➤ YN0000: ┌ Resolution step
+➤ YN0002: │ @aws-sdk/credential-provider-node@npm:3.726.0 doesn't provide @aws-sdk/client-sts (p67392), requested by @aws-sdk/credential-provider-web-identity
+➤ YN0002: │ @aws-sdk/credential-provider-node@npm:3.726.0 doesn't provide @aws-sdk/client-sts (p3747b), requested by @aws-sdk/credential-provider-ini
+➤ YN0002: │ @aws-sdk/credential-provider-sso@npm:3.726.0 doesn't provide @aws-sdk/client-sso-oidc (pc043a), requested by @aws-sdk/token-providers
+➤ YN0002: │ @se-2/nextjs@workspace:packages/nextjs doesn't provide @typescript-eslint/parser (p1319a), requested by @typescript-eslint/eslint-plugin
+➤ YN0060: │ @se-2/nextjs@workspace:packages/nextjs provides react (pd5c65) with version 19.0.0, which doesn't satisfy what next-themes requests
+➤ YN0060: │ @se-2/nextjs@workspace:packages/nextjs provides react (p90367) with version 19.0.0, which doesn't satisfy what qrcode.react requests
+➤ YN0060: │ @se-2/nextjs@workspace:packages/nextjs provides react (p1c81e) with version 19.0.0, which doesn't satisfy what react-copy-to-clipboard requests
+➤ YN0060: │ @se-2/nextjs@workspace:packages/nextjs provides react-dom (p3f223) with version 19.0.0, which doesn't satisfy what next-themes requests
+➤ YN0002: │ burner-connector@npm:0.0.9 doesn't provide @tanstack/react-query (p5bd67), requested by @rainbow-me/rainbowkit
+➤ YN0002: │ burner-connector@npm:0.0.9 doesn't provide react (p19931), requested by @rainbow-me/rainbowkit
+➤ YN0002: │ burner-connector@npm:0.0.9 doesn't provide react-dom (p088c6), requested by @rainbow-me/rainbowkit
+➤ YN0002: │ burner-connector@npm:0.0.9 doesn't provide wagmi (pad561), requested by @rainbow-me/rainbowkit
+➤ YN0002: │ daisyui@npm:4.12.10 doesn't provide postcss (p8e18b), requested by postcss-js
+➤ YN0060: │ ipfs-uploader@npm:0.0.9 provides @aws-sdk/client-s3 (pe8de3) with version 3.726.0, which doesn't satisfy what @aws-sdk/lib-storage requests
+➤ YN0002: │ kubo-rpc-client@npm:5.0.2 doesn't provide undici (p6dc1b), requested by native-fetch
+➤ YN0002: │ kubo-rpc-client@npm:5.1.0 doesn't provide undici (p83adc), requested by native-fetch
+➤ YN0002: │ react-hot-toast@npm:2.4.1 [ef549] doesn't provide csstype (p1ce86), requested by goober
+➤ YN0000: │ Some peer dependencies are incorrectly met; run yarn explain peer-requirements <hash> for details, where <hash> is the six-letter p-prefixed code
+➤ YN0000: └ Completed in 2s 407ms
+➤ YN0000: ┌ Fetch step
+➤ YN0000: └ Completed in 2s 976ms
+➤ YN0000: ┌ Link step
+➤ YN0000: │ ESM support for PnP uses the experimental loader API and is therefore experimental
+➤ YN0000: └ Completed in 0s 911ms
+➤ YN0000: Done with warnings in 6s 870ms
