@@ -21,3 +21,6 @@ node_modules
 
 # cli
 dist
+# Next.js build
+.next
+.turbo
