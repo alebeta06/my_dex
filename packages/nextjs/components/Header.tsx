@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { hardhat } from "viem/chains";
 import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
 import { BanknotesIcon } from "@heroicons/react/24/outline";
+import { ArrowTrendingUpIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick, useTargetNetwork } from "~~/hooks/scaffold-eth";
 
@@ -25,6 +26,11 @@ export const menuLinks: HeaderMenuLink[] = [
     label: "Vault",
     href: "/vault",
     icon: <BanknotesIcon className="h-4 w-4" />,
+  },
+  {
+    label: "Strategy",
+    href: "/strategy",
+    icon: <ArrowTrendingUpIcon className="h-4 w-4" />,
   },
   {
     label: "Debug Contracts",

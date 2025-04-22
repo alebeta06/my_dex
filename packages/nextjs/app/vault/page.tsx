@@ -104,7 +104,7 @@ const VaultPage: NextPage = () => {
         <button
           className="btn btn-accent"
           disabled={vaultWrite.isPending}
-          onClick={() => vaultWrite.writeContractAsync({ functionName: "harvest", args: [] })}
+          onClick={() => vaultWrite.writeContractAsync({ functionName: "harvest", args: undefined })}
         >
           {vaultWrite.isPending ? <span className="loading loading-spinner loading-sm"></span> : "Harvest"}
         </button>
@@ -112,7 +112,7 @@ const VaultPage: NextPage = () => {
         <button
           className="btn btn-accent"
           disabled={controllerWrite.isPending}
-          onClick={() => controllerWrite.writeContractAsync({ functionName: "rebalance", args: [] })}
+          onClick={() => controllerWrite.writeContractAsync({ functionName: "rebalance", args: undefined })}
         >
           {controllerWrite.isPending ? <span className="loading loading-spinner loading-sm"></span> : "Rebalance"}
         </button>
