@@ -68,7 +68,7 @@ export default function StrategyPage() {
                   try {
                     await writeToken({
                       functionName: "approve",
-                      args: ["0xd921ea93f9dfd6443512d724b01ea0004a98aa31", parseEther(depositAmount)],
+                      args: ["0x1ff324e75670175f31767c70911248e3052c4ded", parseEther(depositAmount)],
                     });
                     alert("Aprobación exitosa");
                   } catch (error) {
