@@ -6,13 +6,13 @@ import { useAccount } from "wagmi";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+const VAULT_ADDRESS = "0x1ff324e75670175f31767c70911248e3052c4ded";
 
 export default function StrategyPage() {
   const { address: userAddress } = useAccount();
   const [depositAmount, setDepositAmount] = useState("");
   const [withdrawAmount, setWithdrawAmount] = useState("");
 
-  // Read Vault contract state
   const userAddr = userAddress || ZERO_ADDRESS;
   const { data: userShares } = useScaffoldReadContract({
     contractName: "Vault",
@@ -28,18 +28,13 @@ export default function StrategyPage() {
     functionName: "totalSupply",
   });
 
-  // Prepare write functions for Vault and Controller contracts
   const { writeContractAsync: writeVault } = useScaffoldWriteContract({ contractName: "Vault" });
   const { writeContractAsync: writeController } = useScaffoldWriteContract({ contractName: "Controller" });
+  const { writeContractAsync: writeToken } = useScaffoldWriteContract({ contractName: "MockERC20" });
 
-  // Format BigInt values to human-readable strings
   const userSharesFormatted = formatEther(userShares ?? 0n);
   const totalAssetsFormatted = formatEther(totalAssets ?? 0n);
   const totalSupplyFormatted = formatEther(totalSupply ?? 0n);
-
-  const { writeContractAsync: writeToken } = useScaffoldWriteContract({
-    contractName: "MockERC20", // Este debe coincidir con tu nombre en deploy
-  });
 
   return (
     <>
@@ -68,18 +63,17 @@ export default function StrategyPage() {
                   try {
                     await writeToken({
                       functionName: "approve",
-                      args: ["0x1ff324e75670175f31767c70911248e3052c4ded", parseEther(depositAmount)],
+                      args: [VAULT_ADDRESS, parseEther(depositAmount || "0")],
                     });
-                    alert("Aprobación exitosa");
+                    alert("Aprobación exitosa al Vault");
                   } catch (error) {
-                    console.error("Error al aprobar:", error);
+                    console.error("Error al aprobar tokens:", error);
                   }
                 }}
               >
-                Aprobar tokens
+                Aprobar tokens al Vault
               </button>
 
-              {/* Depositar section */}
               <div className="form-control mt-4">
                 <label className="label">
                   <span className="label-text">Depositar</span>
@@ -111,7 +105,6 @@ export default function StrategyPage() {
                 </div>
               </div>
 
-              {/* Retirar section */}
               <div className="form-control mt-4">
                 <label className="label">
                   <span className="label-text">Retirar</span>
@@ -143,7 +136,6 @@ export default function StrategyPage() {
                 </div>
               </div>
 
-              {/* Strategy actions: Harvest and Rebalance */}
               <div className="mt-6 flex justify-center space-x-2">
                 <button
                   className="btn btn-secondary"
