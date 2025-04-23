@@ -37,6 +37,10 @@ export default function StrategyPage() {
   const totalAssetsFormatted = formatEther(totalAssets ?? 0n);
   const totalSupplyFormatted = formatEther(totalSupply ?? 0n);
 
+  const { writeContractAsync: writeToken } = useScaffoldWriteContract({
+    contractName: "MockERC20", // Este debe coincidir con tu nombre en deploy
+  });
+
   return (
     <>
       {!userAddress && (
@@ -57,6 +61,23 @@ export default function StrategyPage() {
               <p>Tu Balance: {userSharesFormatted} shares</p>
               <p>Activos Totales: {totalAssetsFormatted} tokens</p>
               <p>Supply Total: {totalSupplyFormatted} shares</p>
+
+              <button
+                className="btn btn-outline btn-sm mt-2"
+                onClick={async () => {
+                  try {
+                    await writeToken({
+                      functionName: "approve",
+                      args: ["0xd921ea93f9dfd6443512d724b01ea0004a98aa31", parseEther(depositAmount)],
+                    });
+                    alert("Aprobación exitosa");
+                  } catch (error) {
+                    console.error("Error al aprobar:", error);
+                  }
+                }}
+              >
+                Aprobar tokens
+              </button>
 
               {/* Depositar section */}
               <div className="form-control mt-4">
