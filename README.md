@@ -1,98 +1,88 @@
-# 🏗 Scaffold-ETH 2
+# 💧 DAG Yield Aggregator (MVP) — BlockDAG Testnet
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+Una aplicación DeFi que simula un agregador de rendimiento (Yield Aggregator) estilo Yearn. Construida con **Scaffold-ETH 2**, **Foundry**, y desplegada en la testnet **BlockDAG Primordial**.
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
 
-⚙️ Built using NextJS, RainbowKit, Foundry, Wagmi, Viem, and Typescript.
+## ⚙️ Funcionalidades
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+- ✅ Vault con lógica de depósito y retiro
+- ✅ Estrategia externa para farming simulada
+- ✅ Botón para aprobar tokens al Vault
+- ✅ Función `harvest()` del owner para recolectar rendimientos
+- ✅ Función `rebalance()` del Controller para migrar fondos
+- ✅ Dashboard con estadísticas y dirección del contrato Strategy
+- ✅ Simulación de APY basado en crecimiento de assets
+- ✅ Botones protegidos para el owner
+- ✅ Explorador de bloques y debug desde la UI
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+## 🧪 MVP Actual
 
-## Requirements
+Desde la vista principal (`Home`) puedes:
 
-Before you begin, you need to install the following tools:
+- Aprobar tokens al Vault
+- Depositar tokens
+- Retirar shares
+- Ver dirección de la estrategia actual
+- Ver APY estimado
+- Ejecutar `harvest()` y `rebalance()` (solo owner)
 
-- [Node (>= v20.18.3)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
+## 🚀 Ejecutar la aplicación localmente
 
-## Quickstart
-
-To get started with Scaffold-ETH 2, follow the steps below:
-
-1. Install dependencies if it was skipped in CLI:
-
-```
-cd my-dapp-example
-yarn install
-```
-
-2. Run a local network in the first terminal:
+1. En la Terminal A, levanta la red local:
 
 ```
 yarn chain
 ```
 
-This command starts a local Ethereum network using Foundry. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `packages/foundry/foundry.toml`.
-
-3. On a second terminal, deploy the test contract:
-
-```
-yarn deploy
-```
-
-This command deploys a test smart contract to the local network. The contract is located in `packages/foundry/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/foundry/script` to deploy the contract to the network. You can also customize the deploy script.
-
-4. On a third terminal, start your NextJS app:
-
+2. En la Terminal B, inicia el frontend:
 ```
 yarn start
 ```
+Accede a la app en: http://localhost:3000
 
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
+🧪 Probar contratos con Foundry
 
-Run smart contract test with `yarn foundry:test`
+cd packages/foundry
+```
+forge test
+```
+🧾 Estructura del Proyecto
 
-- Edit your smart contracts in `packages/foundry/contracts`
-- Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
-- Edit your deployment scripts in `packages/foundry/script`
+```
+packages/
+├── foundry/             # Contratos Solidity, pruebas y despliegue
+│   └── contracts/       # Vault, Controller, Strategy, MockERC20
+│   └── script/          # Scripts de deploy y verificación
+│   └── test/            # Pruebas con Forge
+├── nextjs/              # Frontend con Next.js (Scaffold-ETH 2)
+│   ├── app/             # Vista Home y Strategy
+│   ├── components/      # Header, StrategyStats, etc.
+│   ├── hooks/           # useScaffoldReadContract, etc.
+│   └── utils/           # Configuración de redes, wagmi, etc.
+```
 
-## 🚀 Setup ERC-20 Token Extension
+🌐 Red y Explorador
+Red: BlockDAG Primordial Testnet
 
-This extension introduces an ERC-20 token contract and demonstrates how to use interact with it, including getting a holder balance and transferring tokens.
+Explorador: https://primordial.bdagscan.com
 
-The ERC-20 Token Standard introduces a standard for Fungible Tokens ([EIP-20](https://eips.ethereum.org/EIPS/eip-20)), in other words, each Token is exactly the same (in type and value) as any other Token.
+🛠 Posibilidades a futuro
+Integración con estrategias reales (como Aave o Compound)
 
-The ERC-20 token contract is implemented using the [ERC-20 token implementation](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol) from OpenZeppelin.
+Permitir múltiples estrategias y cambiar entre ellas
 
-### Setup
+Estadísticas más detalladas (historial, gráficas)
 
-Deploy your contract running ```yarn deploy```
+Alerta y monitoreo de harvest automático
 
-### Interact with the token
+UI para usuarios y administradores separada
 
-Start the front-end with ```yarn start``` and go to the _/erc20_ page to interact with your deployed ERC-20 token.
-
-You can check the code at ```packages/nextjs/app/erc20/page.tsx```.
+Seguridad: validaciones adicionales y timelocks
 
 
-## Documentation
+📄 Licencia
+MIT — libre uso para fines educativos o comerciales bajo atribución.
 
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
-
-To know more about its features, check out our [website](https://scaffoldeth.io).
-
-## Contributing to Scaffold-ETH 2
-
-We welcome contributions to Scaffold-ETH 2!
-
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+⚠️ Disclaimer: Este proyecto es un MVP de demostración en testnet, no debe usarse en producción sin auditoría.
+hasta aqui en formato Markdown
+todo en un mismo archivo
