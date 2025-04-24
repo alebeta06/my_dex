@@ -15,7 +15,7 @@ const Home: NextPage = () => {
     try {
       await sendTransaction({
         to: addr,
-        value: parseEther("0.001"),
+        value: parseEther("0.3"),
       });
       alert("¡Transferencia enviada!");
     } catch {
@@ -25,7 +25,7 @@ const Home: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center pt-10 space-y-8">
-      <h1 className="text-4xl font-bold text-center">Bienvenido a Mi DApp DeFi</h1>
+      <h1 className="text-4xl font-bold text-center">Agregador de rendimiento “DAG Yield” (DeFi)</h1>
       <div className="space-y-2 text-center">
         <p>Cuenta conectada:</p>
         <Address address={addr} />
@@ -35,7 +35,7 @@ const Home: NextPage = () => {
           <button className="btn btn-primary">Ir al Vault</button>
         </Link>
         <button className="btn" onClick={handleTransfer}>
-          Enviar 0.001 ETH
+          Enviar 0.3 BDAG
         </button>
       </div>
       <div className="flex gap-8 mt-12">

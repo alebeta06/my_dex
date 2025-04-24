@@ -5,12 +5,17 @@ import type { NextPage } from "next";
 import { formatEther, parseEther } from "viem";
 import { useAccount } from "wagmi";
 import { InputBase } from "~~/components/scaffold-eth";
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import {
+  //useScaffoldEventHistory, // <- Por si usas eventos
+  useScaffoldReadContract,
+  useScaffoldWriteContract,
+} from "~~/hooks/scaffold-eth";
 
 const VaultPage: NextPage = () => {
   const { address } = useAccount();
   const [depositAmt, setDepositAmt] = useState<string>("");
   const [withdrawShares, setWithdrawShares] = useState<string>("");
+  //const [history, setHistory] = useState<any[]>([]);
 
   // Lecturas
   const { data: vaultBalance } = useScaffoldReadContract({

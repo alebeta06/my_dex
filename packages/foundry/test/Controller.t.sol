@@ -27,9 +27,7 @@ contract ControllerTest is Test {
 
     function testOnlyOwnerCanHarvest() public {
         // esperamos el error custom de OpenZeppelin Ownable
-        vm.expectRevert(
-          abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", address(2))
-        );
+        vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", address(2)));
         vm.prank(address(2));
         controller.harvest();
     }

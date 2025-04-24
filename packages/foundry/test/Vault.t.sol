@@ -7,7 +7,6 @@ import "../contracts/IStrategy.sol";
 import "../contracts/MockERC20.sol";
 import "../contracts/MockStrategy.sol";
 
-
 contract VaultTest is Test {
     MockERC20 want;
     MockStrategy strategy;
@@ -42,10 +41,8 @@ contract VaultTest is Test {
 
     function testHarvestOnlyOwner() public {
         // Simulamos que un address distinto al owner llama a harvest
-    vm.prank(address(2));
-    vm.expectRevert(
-      abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", address(2))
-    );
-    vault.harvest();
+        vm.prank(address(2));
+        vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", address(2)));
+        vault.harvest();
     }
 }

@@ -19,10 +19,7 @@ contract Vault is ERC20, Ownable {
 
     /// @param _want Token que los usuarios depositan
     /// @param _strategy Estrategia inicial
-    constructor(IERC20 _want, IStrategy _strategy)
-        ERC20("DAG_Yield Vault", "vDAG")
-        Ownable(msg.sender)
-    {
+    constructor(IERC20 _want, IStrategy _strategy) ERC20("DAG_Yield Vault", "vDAG") Ownable(msg.sender) {
         want = _want;
         strategy = _strategy;
     }
@@ -35,16 +32,11 @@ contract Vault is ERC20, Ownable {
         want.safeTransferFrom(msg.sender, address(this), _amount);
 
         // damos permiso a la estrategia
-        require(
-            want.approve(address(strategy), _amount),
-            "Vault: approve failed"
-        );
+        require(want.approve(address(strategy), _amount), "Vault: approve failed");
         strategy.deposit(_amount);
 
         // calculamos shares
-        uint256 shares = totalSupply() == 0
-            ? _amount
-            : (_amount * totalSupply()) / assetsBefore;
+        uint256 shares = totalSupply() == 0 ? _amount : (_amount * totalSupply()) / assetsBefore;
 
         _mint(msg.sender, shares);
         emit Deposit(msg.sender, _amount, shares);
@@ -65,13 +57,14 @@ contract Vault is ERC20, Ownable {
 
     /// @notice Total de want que controla este vault (en vault + en strategy)
     function totalAssets() public view returns (uint256) {
-         // sumamos lo que hay en el vault + lo que hay en la estrategia
-         return want.balanceOf(address(this)) + want.balanceOf(address(strategy));
+        // sumamos lo que hay en el vault + lo que hay en la estrategia
+        return want.balanceOf(address(this)) + want.balanceOf(address(strategy));
     }
     /// @notice Reclama rendimientos (solo owner)
+
     function harvest() external onlyOwner {
-         strategy.harvest();
-     }
+        strategy.harvest();
+    }
 
     /// @notice Cambiar estrategia (solo owner)
     function updateStrategy(IStrategy _newStrategy) external onlyOwner {
