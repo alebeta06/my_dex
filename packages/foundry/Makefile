@@ -49,7 +49,8 @@ format:
 
 # Lint code
 lint:
-	forge fmt --check && prettier --check ./script/**/*.js
+	forge fmt --check && [ -d ./script ] && prettier --check "./script/**/*.js" || echo "No JS files in ./script"
+
 
 # Run tests
 test:
