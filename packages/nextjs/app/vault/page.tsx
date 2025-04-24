@@ -30,6 +30,13 @@ const VaultPage: NextPage = () => {
     functionName: "totalSupply",
   });
 
+  const { data: vaultOwner } = useScaffoldReadContract({
+    contractName: "Vault",
+    functionName: "owner",
+  });
+
+  const isVaultOwner = address?.toLowerCase() === vaultOwner?.toLowerCase();
+
   // Funciones para interactuar con Vault y Controller
   const vaultWrite = useScaffoldWriteContract({ contractName: "Vault" });
   const controllerWrite = useScaffoldWriteContract({ contractName: "Controller" });
@@ -101,10 +108,10 @@ const VaultPage: NextPage = () => {
       </section>
 
       {/* Funciones del Owner */}
-      <div className="flex gap-4 mb-8">
+      <div className="flex gap-4 mt-4">
         <button
           className="btn btn-accent"
-          disabled={vaultWrite.isPending}
+          disabled={!isVaultOwner || vaultWrite.isPending}
           onClick={() => vaultWrite.writeContractAsync({ functionName: "harvest", args: undefined })}
         >
           {vaultWrite.isPending ? <span className="loading loading-spinner loading-sm"></span> : "Harvest"}
@@ -112,7 +119,7 @@ const VaultPage: NextPage = () => {
 
         <button
           className="btn btn-accent"
-          disabled={controllerWrite.isPending}
+          disabled={!isVaultOwner || controllerWrite.isPending}
           onClick={() => controllerWrite.writeContractAsync({ functionName: "rebalance", args: undefined })}
         >
           {controllerWrite.isPending ? <span className="loading loading-spinner loading-sm"></span> : "Rebalance"}
