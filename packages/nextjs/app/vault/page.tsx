@@ -4,20 +4,16 @@ import { useState } from "react";
 import type { NextPage } from "next";
 import { formatEther, parseEther } from "viem";
 import { useAccount } from "wagmi";
+import StrategyStats from "~~/components/StrategyStats";
 import { InputBase } from "~~/components/scaffold-eth";
-import {
-  //useScaffoldEventHistory, // <- Por si usas eventos
-  useScaffoldReadContract,
-  useScaffoldWriteContract,
-} from "~~/hooks/scaffold-eth";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 const VaultPage: NextPage = () => {
   const { address } = useAccount();
   const [depositAmt, setDepositAmt] = useState<string>("");
   const [withdrawShares, setWithdrawShares] = useState<string>("");
-  //const [history, setHistory] = useState<any[]>([]);
 
-  // Lecturas
+  // Leer valores del contrato Vault
   const { data: vaultBalance } = useScaffoldReadContract({
     contractName: "Vault",
     functionName: "balanceOf",
@@ -34,15 +30,15 @@ const VaultPage: NextPage = () => {
     functionName: "totalSupply",
   });
 
-  // Escrituras
-  const vaultWrite = useScaffoldWriteContract("Vault");
-  const controllerWrite = useScaffoldWriteContract("Controller");
+  // Funciones para interactuar con Vault y Controller
+  const vaultWrite = useScaffoldWriteContract({ contractName: "Vault" });
+  const controllerWrite = useScaffoldWriteContract({ contractName: "Controller" });
 
   return (
     <div className="flex flex-col items-center p-8">
       <h1 className="text-3xl font-bold mb-6">Vault Dashboard</h1>
 
-      {/* Estadísticas */}
+      {/* Estadísticas principales del vault */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="card p-4">
           <h2 className="font-semibold">Tu Balance</h2>
@@ -58,7 +54,7 @@ const VaultPage: NextPage = () => {
         </div>
       </div>
 
-      {/* Depositar */}
+      {/* Formulario de Depósito */}
       <section className="mb-8 w-full max-w-md">
         <h2 className="text-xl font-bold mb-2">Depositar</h2>
         <InputBase placeholder="Cantidad en ETH" value={depositAmt} onChange={setDepositAmt} />
@@ -81,7 +77,7 @@ const VaultPage: NextPage = () => {
         </button>
       </section>
 
-      {/* Retirar */}
+      {/* Formulario de Retiro */}
       <section className="mb-8 w-full max-w-md">
         <h2 className="text-xl font-bold mb-2">Retirar</h2>
         <InputBase placeholder="Cantidad de shares" value={withdrawShares} onChange={setWithdrawShares} />
@@ -105,7 +101,7 @@ const VaultPage: NextPage = () => {
       </section>
 
       {/* Funciones del Owner */}
-      <div className="flex gap-4">
+      <div className="flex gap-4 mb-8">
         <button
           className="btn btn-accent"
           disabled={vaultWrite.isPending}
@@ -122,6 +118,9 @@ const VaultPage: NextPage = () => {
           {controllerWrite.isPending ? <span className="loading loading-spinner loading-sm"></span> : "Rebalance"}
         </button>
       </div>
+
+      {/* 🧠 Componente de estadísticas de la estrategia */}
+      <StrategyStats />
     </div>
   );
 };
