@@ -5,8 +5,8 @@ import "~~/styles/globals.css";
 import { getMetadata } from "~~/utils/scaffold-eth/getMetadata";
 
 export const metadata = getMetadata({
-  title: "Mi DApp DeFi",
-  description: "Interfaz DeFi sobre BlockDAG Primordial",
+  title: "DAG Yield",
+  description: "Interfaz DeFi",
 });
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
