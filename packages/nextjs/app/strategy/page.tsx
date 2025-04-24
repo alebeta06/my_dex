@@ -11,7 +11,7 @@ const VAULT_ADDRESS = "0x1ff324e75670175f31767c70911248e3052c4ded";
 export default function StrategyPage() {
   const { address: userAddress } = useAccount();
   const [depositAmount, setDepositAmount] = useState("");
-  const [withdrawAmount, setWithdrawAmount] = useState("");
+  //const [withdrawAmount, setWithdrawAmount] = useState("");
 
   const userAddr = userAddress || ZERO_ADDRESS;
   const { data: userShares } = useScaffoldReadContract({
@@ -27,6 +27,13 @@ export default function StrategyPage() {
     contractName: "Vault",
     functionName: "totalSupply",
   });
+
+  const { data: vaultOwner } = useScaffoldReadContract({
+    contractName: "Vault",
+    functionName: "owner",
+  });
+
+  const isVaultOwner = userAddress?.toLowerCase() === vaultOwner?.toLowerCase();
 
   const { writeContractAsync: writeVault } = useScaffoldWriteContract({ contractName: "Vault" });
   const { writeContractAsync: writeController } = useScaffoldWriteContract({ contractName: "Controller" });
@@ -105,63 +112,35 @@ export default function StrategyPage() {
                 </div>
               </div>
 
-              <div className="form-control mt-4">
-                <label className="label">
-                  <span className="label-text">Retirar</span>
-                </label>
-                <div className="input-group">
-                  <input
-                    type="number"
-                    placeholder="Cantidad de shares"
-                    className="input input-bordered w-full"
-                    value={withdrawAmount}
-                    onChange={e => setWithdrawAmount(e.target.value)}
-                  />
+              {isVaultOwner && (
+                <div className="mt-6 flex justify-center space-x-2">
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-secondary"
                     onClick={async () => {
-                      if (!withdrawAmount) return;
                       try {
-                        await writeVault({
-                          functionName: "withdraw",
-                          args: [parseEther(withdrawAmount)],
-                        });
+                        await writeVault({ functionName: "harvest" });
                       } catch (err) {
-                        console.error("Error al retirar:", err);
+                        console.error("Error al hacer harvest:", err);
                       }
                     }}
                   >
-                    Retirar
+                    Harvest
+                  </button>
+
+                  <button
+                    className="btn btn-secondary"
+                    onClick={async () => {
+                      try {
+                        await writeController({ functionName: "rebalance" });
+                      } catch (err) {
+                        console.error("Error al hacer rebalance:", err);
+                      }
+                    }}
+                  >
+                    Rebalance
                   </button>
                 </div>
-              </div>
-
-              <div className="mt-6 flex justify-center space-x-2">
-                <button
-                  className="btn btn-secondary"
-                  onClick={async () => {
-                    try {
-                      await writeVault({ functionName: "harvest" });
-                    } catch (err) {
-                      console.error("Error al hacer harvest:", err);
-                    }
-                  }}
-                >
-                  Harvest
-                </button>
-                <button
-                  className="btn btn-secondary"
-                  onClick={async () => {
-                    try {
-                      await writeController({ functionName: "rebalance" });
-                    } catch (err) {
-                      console.error("Error al hacer rebalance:", err);
-                    }
-                  }}
-                >
-                  Rebalance
-                </button>
-              </div>
+              )}
             </div>
           </div>
         </div>
