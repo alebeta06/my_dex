@@ -84,5 +84,3 @@ Seguridad: validaciones adicionales y timelocks
 MIT — libre uso para fines educativos o comerciales bajo atribución.
 
 ⚠️ Disclaimer: Este proyecto es un MVP de demostración en testnet, no debe usarse en producción sin auditoría.
-hasta aqui en formato Markdown
-todo en un mismo archivo
