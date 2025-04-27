@@ -48,7 +48,8 @@ const Home: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center p-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Dashboard del Vault y Estrategia</h1>
+      <h1 className="text-4xl font-bold mb-2 text-center">DAG Yield</h1>
+      <p className="text-lg text-gray-500 text-center mb-6">Agregador de Rendimiento DeFi</p>
 
       {/* Estadísticas */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
