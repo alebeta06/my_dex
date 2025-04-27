@@ -28,13 +28,19 @@ Desde la vista principal (`Home`) puedes:
 
 ## 🚀 Ejecutar la aplicación localmente
 
-1. En la Terminal A, levanta la red local:
+1. Clone el Repo
+
+2. En la Terminal A, levanta la red local:
 
 ```
 yarn chain
 ```
+3. En un segundo terminal, implemente los contrato
+```
+yarn deploy
+```
 
-2. En la Terminal B, inicia el frontend:
+4. En la Terminal C, inicia el frontend:
 ```
 yarn start
 ```
@@ -61,26 +67,27 @@ packages/
 │   └── utils/           # Configuración de redes, wagmi, etc.
 ```
 
-🌐 Red y Explorador
+
+## 🌐 Red y Explorador
 Red: BlockDAG Primordial Testnet
 
 Explorador: https://primordial.bdagscan.com
 
-🛠 Posibilidades a futuro
-Integración con estrategias reales (como Aave o Compound)
+## 🛠 Posibilidades a futuro
+- Integración con estrategias reales (como Aave o Compound)
 
-Permitir múltiples estrategias y cambiar entre ellas
+- Permitir múltiples estrategias y cambiar entre ellas
 
-Estadísticas más detalladas (historial, gráficas)
+- Estadísticas más detalladas (historial, gráficas)
 
-Alerta y monitoreo de harvest automático
+- Alerta y monitoreo de harvest automático
 
-UI para usuarios y administradores separada
+- UI para usuarios y administradores separada
 
-Seguridad: validaciones adicionales y timelocks
+ - Seguridad: validaciones adicionales y timelocks
 
 
-📄 Licencia
-MIT — libre uso para fines educativos o comerciales bajo atribución.
+### 📄 Licencia
+- MIT — libre uso para fines educativos o comerciales bajo atribución.
 
-⚠️ Disclaimer: Este proyecto es un MVP de demostración en testnet, no debe usarse en producción sin auditoría.
+### ⚠️ Disclaimer: Este proyecto es un MVP de demostración en testnet, no debe usarse en producción sin auditoría.
